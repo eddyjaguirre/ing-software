@@ -12,6 +12,7 @@ import {
 import { Search } from '@material-ui/icons'
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
+import { registerClient } from "../actions/clientActions";
 
 const styles = theme => ({
 	container: {
@@ -73,6 +74,19 @@ class MainPage extends Component {
 		})
 	}
 
+	handleSubmit = (e) => {
+		e.preventDefault();
+    const newCliente = {
+			juridico: this.state.juridico,
+			cedula: this.state.juridico ? "J-" + this.state.cedula : "V-" + this.state.cedula,
+			nombre: this.state.nombre,
+			direccion: this.state.direccion,
+			telefono: this.state.telefono,
+      email: this.state.email,
+		};
+		this.props.registerClient(newCliente);
+	}
+
 	newEquipo = () => {
 		
 	}
@@ -90,7 +104,12 @@ class MainPage extends Component {
 			<Grid container className={classes.container}>
 				<Grid item xs={12} sm={12} md={9}>
 					<div className={classes.textFieldContainer}>
-						<form noValidate autoComplete='off' className={classes.textFieldForm}>
+						<form
+							noValidate
+							autoComplete='off'
+							className={classes.textFieldForm}
+							onSubmit={this.handleSubmit}
+						>
 							<FormControlLabel 
 								control={
 									<Switch
@@ -152,7 +171,12 @@ class MainPage extends Component {
 								onChange={this.handleField('email')}
 							/>
 							<div className={classes.btnContainer}>
-								<Button variant='contained' color='primary' className={classes.btnContent}>
+								<Button
+									variant='contained'
+									color='primary'
+									type='submit'
+									className={classes.btnContent}
+								>
 									<Icon>
 										<Search/>
 									</Icon>
@@ -226,5 +250,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser, registerClient }
 )(withStyles(styles)(MainPage));

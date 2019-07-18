@@ -7,6 +7,7 @@ const cors = require('cors');
 const users = require('./routes/api/users');
 const levels = require('./routes/api/levels');
 const tecnicos = require('./routes/api/tecnicos');
+const clientes = require('./routes/api/clientes');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(cors());
 app.use('/api/users', users);
 app.use('/api/levels', levels)
 app.use('/api/tecnicos', tecnicos)
+app.use('/api/clientes', clientes)
 
 const port = 5000;
 app.listen(port, () => console.log(`Servidor funcionando en el puerto ${port}!`));
