@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ClienteSchema = new Schema({
   juridico: Boolean,
-  cedula: String,
+  cedula: Number,
   nombre: String,
   direccion: String,
   telefono: String,

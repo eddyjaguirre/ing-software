@@ -52,7 +52,7 @@ class SignupForm extends Component {
     password: '',
     email: '',
     nombre: '',
-    nivelUsuario: null,
+    nivelUsuario: undefined,
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
