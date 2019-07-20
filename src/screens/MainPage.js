@@ -12,7 +12,8 @@ import {
 import { Search } from '@material-ui/icons'
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
-import { registerClient } from "../actions/clientActions";
+import { createClient } from "../actions/clientActions";
+import { createFactura } from "../actions/facturacionActions";
 
 const styles = theme => ({
 	container: {
@@ -56,7 +57,7 @@ const styles = theme => ({
 class MainPage extends Component {
 	state = {
 		juridico: false,
-		cedula: null,
+		cedula: undefined,
 		nombre: '',
 		direccion: '',
 		telefono: '',
@@ -78,13 +79,14 @@ class MainPage extends Component {
 		e.preventDefault();
     const newCliente = {
 			juridico: this.state.juridico,
-			cedula: this.state.juridico ? "J-" + this.state.cedula : "V-" + this.state.cedula,
+			cedula: this.state.cedula,
 			nombre: this.state.nombre,
 			direccion: this.state.direccion,
 			telefono: this.state.telefono,
       email: this.state.email,
 		};
-		this.props.registerClient(newCliente);
+		// this.props.createClient(newCliente);
+		this.props.createFactura(newCliente);
 	}
 
 	newEquipo = () => {
@@ -250,5 +252,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, registerClient }
+  { logoutUser, createFactura }
 )(withStyles(styles)(MainPage));

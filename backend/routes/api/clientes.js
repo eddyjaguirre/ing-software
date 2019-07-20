@@ -13,7 +13,7 @@ router.post("/get-list", (req, res) => {
   })
 })
 
-router.post("/register", (req, res) => {
+router.post("/create", (req, res) => {
   Cliente.findOne({cedula: req.body.cedula}).then(cliente => {
     if (cliente) {
       return res.status(400).json({cedula: 'El cliente ya existe'});
@@ -28,7 +28,10 @@ router.post("/register", (req, res) => {
       });
       newCliente
         .save()
-        .then(cliente => res.json(cliente))
+        .then(cliente => {
+          res.json(cliente._id);
+          // return res.json(cliente);
+        })
         .catch(err => console.log(err));
     }
   })

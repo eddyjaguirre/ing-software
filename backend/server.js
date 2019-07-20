@@ -8,6 +8,7 @@ const users = require('./routes/api/users');
 const levels = require('./routes/api/levels');
 const tecnicos = require('./routes/api/tecnicos');
 const clientes = require('./routes/api/clientes');
+const facturas = require('./routes/api/facturas');
 
 const app = express();
 
@@ -35,9 +36,10 @@ require('./config/passport')(passport);
 app.use(cors());
 
 app.use('/api/users', users);
-app.use('/api/levels', levels)
-app.use('/api/tecnicos', tecnicos)
-app.use('/api/clientes', clientes)
+app.use('/api/levels', levels);
+app.use('/api/tecnicos', tecnicos);
+app.use('/api/clientes', clientes);
+app.use('/api/facturas', facturas);
 
 const port = 5000;
 app.listen(port, () => console.log(`Servidor funcionando en el puerto ${port}!`));

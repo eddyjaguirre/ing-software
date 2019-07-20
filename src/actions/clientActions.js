@@ -11,9 +11,9 @@ export const getClientList = () => dispatch => {
     );
 };
 
-export const registerClient = (clientData) => dispatch => {
+export const createClient = (clientData) => dispatch => {
   axios
-    .post("http://localhost:5000/api/clientes/register", clientData)
+    .post("http://localhost:5000/api/clientes/create", clientData)
     .then(()=>{
       console.log("Cliente Registrado");
     })
