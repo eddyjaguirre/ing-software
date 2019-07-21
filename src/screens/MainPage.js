@@ -12,7 +12,7 @@ import {
 import { Search } from '@material-ui/icons'
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
-import { createClient } from "../actions/clientActions";
+// import { createClient } from "../actions/clientActions";
 import { createFactura } from "../actions/facturacionActions";
 
 const styles = theme => ({

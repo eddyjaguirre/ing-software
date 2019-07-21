@@ -13,10 +13,11 @@ export const registerUser = (userData, history) => dispatch => {
     .post("http://localhost:5000/api/users/register", userData)
     .then(() => history.push("/login")) // redirecciona al login
     .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
+      console.log(err)
+      // dispatch({
+      //   type: GET_ERRORS,
+      //   payload: err.response.data
+      // })
     );
 };
 

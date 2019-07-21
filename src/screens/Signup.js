@@ -78,9 +78,7 @@ class SignupForm extends Component {
     const newUser = {
       email: this.state.email,
       password: this.state.password,
-      datosPersonales: {
-        nombre: this.state.nombre
-      },
+      nombre: this.state.nombre
     };
     this.props.registerUser(newUser, this.props.history);
   }
