@@ -179,10 +179,7 @@ class MainPage extends Component {
 									type='submit'
 									className={classes.btnContent}
 								>
-									<Icon>
-										<Search/>
-									</Icon>
-									Buscar
+									Crear factura
 								</Button>
 							</div>
 						</form>
