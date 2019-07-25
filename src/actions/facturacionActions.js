@@ -11,7 +11,7 @@ import axios from 'axios';
 //     );
 // };
 
-export const createFactura = (clientData, otherParam) => dispatch => {
+export const createFactura = (clientData) => dispatch => {
   axios
     .post("http://localhost:5000/api/facturas/create", {clientData})
     .then(()=>{

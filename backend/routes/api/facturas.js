@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 
 const Factura = require("../../models/Factura");
 const Cliente = require("../../models/Cliente");
-const Equipo = require("../../models/Equipo");
 const Servicio = require("../../models/Servicio");
+// const Equipo = require("../../models/Equipo");
 
 router.post("/get-paid", (req, res) => {
   Factura.findAll({pagado: true})
@@ -31,9 +31,24 @@ router.post("/get-pending", (req, res) => {
 router.post("/create", (req, res) => {
   Cliente.findOne({cedula: req.body.clientData.cedula}).then(cliente => {
     if (cliente) {
-      const newFactura = new Factura({
+      let newFactura = new Factura({
+        _id: new mongoose.Types.ObjectId(),
         owner_id: cliente._id,
       });
+      let servicios = req.body.clientData.servicios;
+      for (let i=0; i < servicios.length; i++){
+        let newServicio = new Servicio({
+          titulo: servicios[i].titulo,
+          descripcion: servicios[i].descripcion,
+          serial_equipo: servicios[i].serial_equipo,
+          precio: servicios[i].precio,
+          notas: servicios[i].notas,
+          tecnico_id: servicios[i].tecnico_id,
+          factura_id: newFactura._id,
+        });
+        newFactura.servicios[i] = newServicio;
+        newServicio.save();
+      }
       newFactura.save()
       .then(factura => res.json(factura))
       .catch(err=>console.log(err));
@@ -52,9 +67,24 @@ router.post("/create", (req, res) => {
         .save()
         .then(cliente => {
           // res.json(cliente)
-          const newFactura = new Factura({
+          let newFactura = new Factura({
+            _id: new mongoose.Types.ObjectId(),
             owner_id: cliente._id,
           });
+          let servicios = req.body.clientData.servicios;
+          for (let i=0; i < servicios.length; i++){
+            let newServicio = new Servicio({
+              titulo: servicios[i].titulo,
+              descripcion: servicios[i].descripcion,
+              serial_equipo: servicios[i].serial_equipo,
+              precio: servicios[i].precio,
+              notas: servicios[i].notas,
+              tecnico_id: servicios[i].tecnico_id,
+              factura_id: newFactura._id,
+            });
+            newFactura.servicios[i] = newServicio;
+            newServicio.save();
+          }
           newFactura.save()
           .then(factura => res.json(factura))
           .catch(err=>console.log(err));
@@ -64,10 +94,21 @@ router.post("/create", (req, res) => {
   })
 })
 
-// const asignarClienteAFactura = (cliente) => {
-//   const newFactura = new Factura({
-
-//   })
+// const asignarServicios = (req, res, next) => {
+//   let servicios = req.body.clientData.servicios;
+  
+//   for (let i=0; i < servicios.length; i++){
+//     let newServicio = new Servicio({
+//       titulo: servicios[i].titulo,
+//       descripcion: servicios[i].descripcion,
+//       serial_equipo: servicios[i].serial_equipo,
+//       precio: servicios[i].precio,
+//       notas: servicios[i].notas,
+//       tecnico_id: servicios[i].tecnico_id,
+//       factura_id: newFactura._id,
+//     });
+//     newFactura.servicios[i] = newServicio;
+//   }
 // }
 
 module.exports = router;

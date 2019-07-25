@@ -23,6 +23,10 @@ const FacturaSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = Factura = mongoose.model("facturas", FacturaSchema);

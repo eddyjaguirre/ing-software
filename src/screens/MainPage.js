@@ -5,15 +5,17 @@ import {
 	Grid,
 	TextField,
 	Button,
-	Icon,
+	// Icon,
 	Switch,
 	FormControlLabel
 } from '@material-ui/core';
-import { Search } from '@material-ui/icons'
+// import { Search } from '@material-ui/icons'
+import Servicio from '../components/Servicio';
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
-// import { createClient } from "../actions/clientActions";
 import { createFactura } from "../actions/facturacionActions";
+import { getNombresTecnicos } from '../actions/tecnicoActions';
+import axios from 'axios';
 
 const styles = theme => ({
 	container: {
@@ -62,7 +64,25 @@ class MainPage extends Component {
 		direccion: '',
 		telefono: '',
 		email: '',
-		equipos: [],
+		servicios: [
+			// {
+			// 	titulo: 'Dummy 1',
+			// 	descripcion: 'Dummy data',
+			// 	serial_equipo: '1234abcd',
+			// 	precio: 10,
+			// 	notas: 'Data para pruebas',
+			// 	tecnico_id: '5d1d10dab06340191c67f18d',
+			// },
+			// {
+			// 	titulo: 'Dummy 2',
+			// 	descripcion: 'Dummy data',
+			// 	serial_equipo: 'abcd1234',
+			// 	precio: 15,
+			// 	notas: 'Más data para pruebas',
+			// 	tecnico_id: '5d1d10dab06340191c67f18d',
+			// },
+		],
+		tecnicos: []
 	}
 
 	handleChange = (event) => {
@@ -75,32 +95,58 @@ class MainPage extends Component {
 		})
 	}
 
+	handleNumberField = (name) => (event) => {
+		if (event.target.value >= 0) {
+			this.setState({[name]: event.target.value});
+		}
+	}
+
 	handleSubmit = (e) => {
 		e.preventDefault();
-    const newCliente = {
-			juridico: this.state.juridico,
-			cedula: this.state.cedula,
-			nombre: this.state.nombre,
-			direccion: this.state.direccion,
-			telefono: this.state.telefono,
-      email: this.state.email,
-		};
-		// this.props.createClient(newCliente);
-		this.props.createFactura(newCliente);
+		if (this.state.servicios.length > 0) {
+			const newCliente = {
+				juridico: this.state.juridico,
+				cedula: this.state.cedula,
+				nombre: this.state.nombre,
+				direccion: this.state.direccion,
+				telefono: this.state.telefono,
+				email: this.state.email,
+				servicios: this.state.servicios,
+			};
+			
+			this.props.createFactura(newCliente);
+		}
 	}
-
-	newEquipo = () => {
-		
-	}
-
+	
 	onLogoutClick = (e) => {
 		e.preventDefault();
 		this.props.logoutUser();
 	}
 
+	getTecnicos = () => {
+		axios
+			.post("http://localhost:5000/api/tecnicos/nombres")
+			.then(res => {
+				// return res.data
+				this.setState({tecnicos: res.data});
+			})
+			.catch(err =>
+				console.log(err)
+			);
+	}
+
+	componentDidMount() {
+		this.getTecnicos();
+	}
+
+	// handleAgregar = (e) => {
+	// 	e.preventDefault();
+	// 	// console.log(e);
+	// }
+
   render() {
 		const {classes} = this.props;
-		const {juridico} = this.state;
+		const {juridico, tecnicos} = this.state;
 
     return (
 			<Grid container className={classes.container}>
@@ -132,7 +178,7 @@ class MainPage extends Component {
 								margin='normal'
 								variant='outlined'
 								value={this.state.cedula}
-								onChange={this.handleField('cedula')}
+								onChange={this.handleNumberField('cedula')}
 							/>
 							<TextField 
 								id='nombre'
@@ -160,7 +206,7 @@ class MainPage extends Component {
 								type='number'
 								variant='outlined'
 								value={this.state.telefono}
-								onChange={this.handleField('telefono')}
+								onChange={this.handleNumberField('telefono')}
 							/>
 							<TextField 
 								id='email'
@@ -172,6 +218,8 @@ class MainPage extends Component {
 								value={this.state.email}
 								onChange={this.handleField('email')}
 							/>
+							{/* <Servicio tecnicos={[{_id: 0, datosPersonales: {nombre: "Eddy"}},{_id: 1, datosPersonales: {nombre: "Juan"}}]}/> */}
+							{/* <Servicio tecnicos={tecnicos}/> */}
 							<div className={classes.btnContainer}>
 								<Button
 									variant='contained'
@@ -183,51 +231,17 @@ class MainPage extends Component {
 								</Button>
 							</div>
 						</form>
+						<Servicio 
+							tecnicos={tecnicos}
+							handleServicio={(servicio)=>{
+								let newServicios = this.state.servicios;
+								newServicios.push(servicio);
+								this.setState({servicios: newServicios});
+								// console.log(this.state);
+							}}
+						/>
 					</div>
 				</Grid>
-				{/* <Grid item xs={12} sm={12} md={9}>
-					<div className={classes.textFieldContainer}>
-						<form noValidate autoComplete='off' className={classes.textFieldForm}>
-							<TextField 
-								id='cedula'
-								label='Cédula'
-								className={classes.textField}
-								type='number'
-								margin='normal'
-								variant='outlined'
-								// value={this.state.name}
-								// onChange={this.handleField('name')}
-							/>
-							<TextField 
-								id='nombre'
-								label='Nombre'
-								className={classes.textField}
-								margin='normal'
-								variant='outlined'
-								// value={this.state.name}
-								// onChange={this.handleField('name')}
-							/>
-							<TextField 
-								id='apellido'
-								label='Apellido'
-								className={classes.textField}
-								margin='normal'
-								variant='outlined'
-								// value={this.state.name}
-								// onChange={this.handleField('name')}
-							/>
-							<TextField 
-								id='direccion'
-								label='Dirección'
-								className={classes.textField}
-								margin='normal'
-								variant='outlined'
-								// value={this.state.name}
-								// onChange={this.handleField('name')}
-							/>
-						</form>
-					</div>
-				</Grid> */}
 				<Grid item xs={12} sm={12} md={9}>
 					<Button
 						onClick={this.onLogoutClick}
@@ -249,5 +263,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, createFactura }
+  { logoutUser, createFactura, getNombresTecnicos }
 )(withStyles(styles)(MainPage));

@@ -11,7 +11,11 @@ const ClienteSchema = new Schema({
   facturas: {
     type: Array,
     default: [],
-  }, 
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = Cliente = mongoose.model("clientes", ClienteSchema);

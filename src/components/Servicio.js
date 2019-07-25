@@ -5,9 +5,13 @@ import {
 	Grid,
 	TextField,
 	Button,
-	Icon,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem
+	// Icon,
 } from '@material-ui/core';
-import { Search } from '@material-ui/icons'
+// import { Search } from '@material-ui/icons'
 
 const styles = theme => ({
 	container: {
@@ -42,27 +46,26 @@ const styles = theme => ({
 	switchContainer: {
 		display: 'flex',
 		width: '100%',
-	}
+	},
+	formControl: {
+		display: 'flex',
+		minWidth: 400,
+  },
 });
 
 class MainPage extends Component {
 	state = {
-		juridico: false,
-		cedula: null,
-		nombre: '',
-		direccion: '',
-		telefono: '',
-		email: '',
-		equipos: [],
+		titulo: '',
+		descripcion: '',
+		precio: 0,
+		serial_equipo: '',
+		notas: '',
+		tecnico_id: '',
 	}
 
   // static propTypes = {
   //   prop: PropTypes
 	// }
-
-	handleChange = (event) => {
-		this.setState({juridico: event.target.checked});
-	}
 
 	handleField = (name) => (event) => {
 		this.setState({
@@ -70,18 +73,56 @@ class MainPage extends Component {
 		})
 	}
 
-	newEquipo = () => {
-		
+	handleNumberField = (name) => (event) => {
+		if (event.target.value >= 0) {
+			this.setState({[name]: event.target.value});
+		}
+	}
+
+	handleChange = (event) => {
+		this.setState({tecnico_id: event.target.value});
+	}
+
+	handleAgregar = () => {
+		// event.preventDefault();
+
+		let newServicio = {
+			titulo: this.state.titulo,
+			descripcion: this.state.descripcion,
+			serial_equipo: this.state.serial_equipo,
+			precio: this.state.precio,
+			notas: this.state.notas,
+			tecnico_id: this.state.tecnico_id,
+		};
+
+		this.setState({
+			titulo: '',
+			descripcion: '',
+			precio: 0,
+			serial_equipo: '',
+			notas: '',
+			tecnico_id: '',
+		})
+		// console.log(newServicio);
+		return newServicio;
 	}
 
   render() {
-		const { classes } = this.props;
+		const { classes, tecnicos } = this.props;
 
     return (
 			<Grid container className={classes.container}>
 				<Grid item xs={12} sm={12} md={9}>
 					<div className={classes.textFieldContainer}>
-						<form noValidate autoComplete='off' className={classes.textFieldForm}>
+						<form 
+							noValidate autoComplete='off' 
+							className={classes.textFieldForm}
+							onSubmit={(e)=>{
+								e.preventDefault();
+								// this.handleAgregar();
+								this.props.handleServicio(this.handleAgregar());
+							}}
+						>
 							<TextField 
 								id='titulo'
 								label='Título'
@@ -100,14 +141,24 @@ class MainPage extends Component {
 								value={this.state.descripcion}
 								onChange={this.handleField('descripcion')}
               />
+							<TextField 
+								id='precio'
+								label='Precio'
+								className={classes.textField}
+								margin='normal'
+								variant='outlined'
+								type='number'
+								value={this.state.precio}
+								onChange={this.handleNumberField('precio')}
+              />
               <TextField 
-								id='serial-equipo'
+								id='serial_equipo'
 								label='Serial del Equipo'
 								className={classes.textField}
 								margin='normal'
 								variant='outlined'
-								value={this.state.serialEquipo}
-								onChange={this.handleField('serial-equipo')}
+								value={this.state.serial_equipo}
+								onChange={this.handleField('serial_equipo')}
               />
               <TextField 
 								id='notas'
@@ -119,50 +170,37 @@ class MainPage extends Component {
 								onChange={this.handleField('notas')}
               />
 
-							{/*<TextField 
-								id='nombre'
-								label={juridico ? 'Nombre' : 'Nombre y Apellido'}
-								className={classes.textField}
-								margin='normal'
-								variant='outlined'
-								value={this.state.nombre}
-								onChange={this.handleField('nombre')}
-							/>
-							<TextField 
-								id='direccion'
-								label='Dirección'
-								className={classes.textField}
-								margin='normal'
-								variant='outlined'
-								value={this.state.direccion}
-								onChange={this.handleField('direccion')}
-							/>
-							<TextField 
-								id='telefono'
-								label='Teléfono'
-								className={classes.textField}
-								margin='normal'
-								type='number'
-								variant='outlined'
-								value={this.state.telefono}
-								onChange={this.handleField('telefono')}
-							/>
-							<TextField 
-								id='email'
-								type='email'
-								label='Correo Electrónico'
-								className={classes.textField}
-								margin='normal'
-								variant='outlined'
-								value={this.state.email}
-								onChange={this.handleField('email')}
-              />*/}
+							<div className={classes.textField}>
+								{tecnicos && <FormControl className={classes.formControl}>
+									<InputLabel htmlFor="tecnicos">Técnico asignado</InputLabel>
+									<Select
+										value={this.state.tecnico_id}
+										onChange={this.handleChange}
+										inputProps={{
+											name: 'tecnicos',
+											id: 'tecnicos',
+										}}
+									>
+										{tecnicos.map((tecnico)=>{
+											return (<MenuItem key={tecnico._id} value={tecnico._id}>{tecnico.datosPersonales.nombre}</MenuItem>)
+										})}
+										{/* <MenuItem value={10}>Ten</MenuItem>
+										<MenuItem value={20}>Twenty</MenuItem>
+										<MenuItem value={30}>Thirty</MenuItem> */}
+									</Select>
+								</FormControl>}
+							</div>
 							<div className={classes.btnContainer}>
-								<Button variant='contained' color='primary' className={classes.btnContent}>
-									<Icon>
+								<Button
+									variant='contained'
+									color='primary'
+									className={classes.btnContent}
+									type='submit'
+								>
+									{/* <Icon>
 										<Search/>
-									</Icon>
-									Buscar
+									</Icon> */}
+									Agregar
 								</Button>
 							</div>
 						</form>
