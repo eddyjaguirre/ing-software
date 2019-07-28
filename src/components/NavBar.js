@@ -62,6 +62,7 @@ class NavBar extends Component {
               <MenuItem component={RouterLink} to='/dashboard'>Nueva Entrada</MenuItem>
               <MenuItem component={RouterLink} to='/agregar-tecnico'>Agregar Técnico</MenuItem>
               <MenuItem component={RouterLink} to='/agregar-empleado'>Agregar Empleado</MenuItem>
+              <MenuItem component={RouterLink} to='/pendientes-tecnico'>Equipos Pendientes</MenuItem>
               {/* <MenuItem>Equipos Pendientes</MenuItem>
               <MenuItem>Listado de Técnicos</MenuItem>
               <MenuItem>Agregar Servicios Nuevos</MenuItem> */}

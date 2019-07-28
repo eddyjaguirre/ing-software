@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 // import { Search } from '@material-ui/icons'
 import Servicio from '../components/Servicio';
+import MostrarServicios from '../components/MostrarServicios';
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import { createFactura } from "../actions/facturacionActions";
@@ -64,25 +65,8 @@ class MainPage extends Component {
 		direccion: '',
 		telefono: '',
 		email: '',
-		servicios: [
-			// {
-			// 	titulo: 'Dummy 1',
-			// 	descripcion: 'Dummy data',
-			// 	serial_equipo: '1234abcd',
-			// 	precio: 10,
-			// 	notas: 'Data para pruebas',
-			// 	tecnico_id: '5d1d10dab06340191c67f18d',
-			// },
-			// {
-			// 	titulo: 'Dummy 2',
-			// 	descripcion: 'Dummy data',
-			// 	serial_equipo: 'abcd1234',
-			// 	precio: 15,
-			// 	notas: 'Más data para pruebas',
-			// 	tecnico_id: '5d1d10dab06340191c67f18d',
-			// },
-		],
-		tecnicos: []
+		servicios: [],
+		tecnicos: [],
 	}
 
 	handleChange = (event) => {
@@ -113,14 +97,23 @@ class MainPage extends Component {
 				email: this.state.email,
 				servicios: this.state.servicios,
 			};
-			
 			this.props.createFactura(newCliente);
+			this.setState({
+				juridico: false,
+				cedula: undefined,
+				nombre: '',
+				direccion: '',
+				telefono: '',
+				email: '',
+				servicios: [],
+			});
 		}
 	}
 	
 	onLogoutClick = (e) => {
 		e.preventDefault();
 		this.props.logoutUser();
+		window.location.href = "./login";
 	}
 
 	getTecnicos = () => {
@@ -240,6 +233,7 @@ class MainPage extends Component {
 								// console.log(this.state);
 							}}
 						/>
+						<MostrarServicios servicios={this.state.servicios}/>
 					</div>
 				</Grid>
 				<Grid item xs={12} sm={12} md={9}>

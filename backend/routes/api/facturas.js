@@ -94,21 +94,13 @@ router.post("/create", (req, res) => {
   })
 })
 
-// const asignarServicios = (req, res, next) => {
-//   let servicios = req.body.clientData.servicios;
-  
-//   for (let i=0; i < servicios.length; i++){
-//     let newServicio = new Servicio({
-//       titulo: servicios[i].titulo,
-//       descripcion: servicios[i].descripcion,
-//       serial_equipo: servicios[i].serial_equipo,
-//       precio: servicios[i].precio,
-//       notas: servicios[i].notas,
-//       tecnico_id: servicios[i].tecnico_id,
-//       factura_id: newFactura._id,
-//     });
-//     newFactura.servicios[i] = newServicio;
-//   }
-// }
+router.post("/update-servicio", (req, res) => {
+  Servicio.findOne({_id: req.body._id}).then(servicio => {
+    servicio.completado = req.body.completado;
+    servicio.save()
+      .then(serv => res.json(serv))
+      .catch(err => console.log(err));
+  })
+})
 
 module.exports = router;

@@ -6,16 +6,6 @@ import jwt_decode from "jwt-decode";
 
 
 const PrivateRoute = ({ component: Component, roles, auth, ...rest }) => (
-  // <Route
-  //   {...rest}
-  //   render={props => 
-  //     auth.isAuthenticated === true ? (
-    //       <Component {...props} />
-    //     ) : (
-  //       <Redirect to="/login" />
-  //     )
-  //   }
-  // />
   <Route {...rest} render={props => {
     const userRole = jwt_decode(localStorage.jwtToken).nivelUsuario;
     if (!auth.isAuthenticated) {

@@ -16,6 +16,8 @@ import {
 const styles = theme => ({
 	container: {
 		padding: 48,
+		display: 'flex',
+		flexDirection: 'column'
 	},
 	textFieldContainer: {
 		backgroundColor: '#00000007',

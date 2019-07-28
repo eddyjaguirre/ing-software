@@ -101,4 +101,50 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.post("/change-password", (req, res) => {
+  User.findOne({email: req.body.email}).then(user => {
+    const newPassword = req.body.password;
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newPassword, salt, (err, hash) => {
+        if (err) throw err;
+        user.password = hash;
+        user
+          .save()
+          .then(user => res.json(user))
+          .catch(err => console.log(err));
+      });
+    });
+
+    // if (user) {
+    //   // return res.status(400).json({email: 'El usuario ya existe'});
+    // } else {
+    //   const newUser = new User({
+    //     email: req.body.email,
+    //     password: req.body.password,
+    //     nivelUsuario: req.body.nivelUsuario,
+    //     datosPersonales: {
+    //       nombre: req.body.nombre,
+    //       cedula: req.body.cedula,
+    //       rif: req.body.rif,
+    //       direccion: req.body.direccion,
+    //       telefono: req.body.telefono,
+    //       especialidad: req.body.especialidad,
+    //     }
+    //   });
+      
+    //   //Encripta la clave antes de guardarla
+    //   bcrypt.genSalt(10, (err, salt) => {
+    //     bcrypt.hash(newUser.password, salt, (err, hash) => {
+    //       if (err) throw err;
+    //       newUser.password = hash;
+    //       newUser
+    //         .save()
+    //         .then(user => res.json(user))
+    //         .catch(err => console.log(err));
+    //     });
+    //   });
+    // }
+  });
+});
+
 module.exports = router;

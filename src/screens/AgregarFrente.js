@@ -75,7 +75,7 @@ class AgregarFrente extends Component {
     const newUser = {
 			nombre: this.state.nombre,
 			cedula: this.state.cedula,
-			rif: this.state.rif,
+			// rif: this.state.rif,
 			direccion: this.state.direccion,
 			telefono: this.state.telefono,
 			email: this.state.email,
@@ -125,7 +125,7 @@ class AgregarFrente extends Component {
 								value={this.state.cedula}
 								onChange={this.handleField('cedula')}
 							/>
-							<TextField 
+							{/* <TextField 
 								id='rif'
 								label={'RIF'}
 								className={classes.textField}
@@ -133,7 +133,7 @@ class AgregarFrente extends Component {
 								variant='outlined'
 								value={this.state.rif}
 								onChange={this.handleField('rif')}
-							/>
+							/> */}
 							<TextField 
 								id='direccion'
 								label='Dirección'

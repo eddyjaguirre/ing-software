@@ -13,6 +13,7 @@ import Signup from './screens/Signup';
 import AuthPage from './screens/AuthPage';
 import AgregarFrente from "./screens/AgregarFrente";
 import Forbidden from "./screens/Forbidden";
+import TecnicoPendientes from "./screens/TecnicoPendientes";
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -25,20 +26,16 @@ import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
 if (localStorage.jwtToken) {
-  // Set auth token header auth
-  const token = localStorage.jwtToken;
-  setAuthToken(token);
-  // Decode token and get user info and exp
-  const decoded = jwt_decode(token);
-  // Set user and isAuthenticated
-  store.dispatch(setCurrentUser(decoded));
-// Check for expired token
-  const currentTime = Date.now() / 1000; // to get in milliseconds
+  const token = localStorage.jwtToken;    
+  setAuthToken(token);                      // Set auth token header auth
+  const decoded = jwt_decode(token);        // Decode token and get user info and exp
+  store.dispatch(setCurrentUser(decoded));  // Set user and isAuthenticated
+  
+  // Check for expired token
+  const currentTime = Date.now() / 1000;    // to get in milliseconds
   if (decoded.exp < currentTime) {
-    // Logout user
-    store.dispatch(logoutUser());
-    // Redirect to login
-    window.location.href = "./login";
+    store.dispatch(logoutUser());           // Logout user
+    window.location.href = "./login";       // Redirect to login
   }
 }
 
@@ -57,6 +54,7 @@ class App extends Component {
             <Switch>
               <PrivateRoute exact path='/agregar-tecnico' component={AgregarTecnico} roles={[0]}/>
               <PrivateRoute exact path='/agregar-empleado' component={AgregarFrente} roles={[0]}/>
+              <PrivateRoute exact path='/pendientes-tecnico' component={TecnicoPendientes} roles={[0, 1]}/>
               <PrivateRoute exact path='/dashboard' component={MainPage}/>
             </Switch>
           </AppContent>
